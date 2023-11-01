@@ -1,5 +1,6 @@
 package org.acme.kafka;
 
+import javax.inject.Inject;
 import org.acme.kafka.quarkus.Movie;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
@@ -16,10 +17,13 @@ public class MovieResource {
   @Channel("movies")
   Emitter<Movie> emitter;
 
+  @Inject
+  MovieConverter movieConverter;
+
   @POST
-  public Response enqueueMovie(Movie movie) {
+  public Response enqueueMovie(MovieDto movie) {
     LOGGER.infof("Sending movie %s to Kafka", movie.getTitle());
-    emitter.send(movie);
+    emitter.send(movieConverter.convert(movie));
     return Response.accepted().build();
   }
 

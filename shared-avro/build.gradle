@@ -1,16 +1,27 @@
 plugins {
     id 'java'
     id 'io.quarkus'
+    id 'org.kordamp.gradle.jandex'
 }
 
 repositories {
     mavenCentral()
     mavenLocal()
+    maven {
+        url = 'https://packages.confluent.io/maven/'
+    }
 }
 
 dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    implementation 'io.quarkus:quarkus-apicurio-registry-avro'
+    implementation("io.quarkus:quarkus-confluent-registry-avro")
+
+    // Confluent registry libraries use JAX-RS client
+    implementation("io.quarkus:quarkus-rest-client-reactive")
+
+    implementation("io.confluent:kafka-avro-serializer:7.2.0") {
+        exclude group: "jakarta.ws.rs", module: "jakarta.ws.rs-api"
+    }
 }
 
 group 'org.acme'

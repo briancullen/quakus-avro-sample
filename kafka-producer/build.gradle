@@ -6,16 +6,30 @@ plugins {
 repositories {
     mavenCentral()
     mavenLocal()
+    maven {
+        url = 'https://packages.confluent.io/maven/'
+    }
 }
 
 dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    implementation 'io.quarkus:quarkus-apicurio-registry-avro'
+    implementation("io.quarkus:quarkus-confluent-registry-avro")
+
+    // Confluent registry libraries use JAX-RS client
+    implementation("io.quarkus:quarkus-rest-client-reactive")
+
+    implementation("io.confluent:kafka-avro-serializer:7.2.0") {
+        exclude group: "jakarta.ws.rs", module: "jakarta.ws.rs-api"
+    }
     implementation 'io.quarkus:quarkus-smallrye-reactive-messaging-kafka'
     implementation 'io.quarkus:quarkus-resteasy-reactive-jackson'
     implementation 'io.quarkus:quarkus-arc'
-//    implementation project(':shared-avro')
+
+    implementation project(':shared-avro')
     testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
+    testImplementation 'org.awaitility:awaitility:4.0.3'
+    testImplementation 'io.rest-assured:rest-assured'
 }
 
 group 'org.acme'

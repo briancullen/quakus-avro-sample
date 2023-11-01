@@ -1,7 +1,0 @@
-@namespace("org.acme.kafka.quarkus")
-protocol MovieProtocol {
-  record Movie {
-    string title;
-    int year;
-  }
-}
