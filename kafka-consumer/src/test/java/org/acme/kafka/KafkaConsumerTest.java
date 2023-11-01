@@ -1,6 +1,7 @@
 package org.acme.kafka;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.reactive.messaging.MutinyEmitter;
 import jakarta.inject.Inject;
 import org.acme.kafka.quarkus.Movie;
@@ -22,16 +23,14 @@ public class KafkaConsumerTest {
     // Given
     Movie movie = new Movie("The Godfather", 1972);
 
-    consumedMovieResource.stream().subscribe().with(
-        movieString -> System.out.println(movieString),
-        failure -> System.out.println(failure),
-        () -> System.out.println("Completed"));
+    AssertSubscriber<String> subscriber = consumedMovieResource.stream()
+        .subscribe().withSubscriber(AssertSubscriber.create(10));
 
     // When
     movieEventEmitter.send(movie).await().indefinitely();
 
     // Then
-    Thread.sleep(10000);
+    subscriber.awaitCompletion();
   }
 
 }

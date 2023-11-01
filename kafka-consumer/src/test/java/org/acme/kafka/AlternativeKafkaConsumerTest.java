@@ -5,6 +5,7 @@ import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.kafka.InjectKafkaCompanion;
 import io.quarkus.test.kafka.KafkaCompanionResource;
+import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.reactive.messaging.kafka.companion.KafkaCompanion;
 import jakarta.inject.Inject;
 import org.acme.kafka.quarkus.Movie;
@@ -27,17 +28,15 @@ public class AlternativeKafkaConsumerTest {
     // Given
     Movie movie = new Movie("The Godfather", 1972);
 
-    consumedMovieResource.stream().subscribe().with(
-        movieString -> System.out.println(movieString),
-        failure -> System.out.println(failure),
-        () -> System.out.println("Completed"));
+    AssertSubscriber<String> subscriber = consumedMovieResource.stream()
+        .subscribe().withSubscriber(AssertSubscriber.create(10));
 
     // When
     kafkaCompanion.produceWithSerializers(StringSerializer.class, KafkaAvroSerializer.class)
         .fromRecords(new ProducerRecord<>("movies", movie));
 
     // Then
-    Thread.sleep(10000);
+    subscriber.awaitCompletion();
   }
 
 }
