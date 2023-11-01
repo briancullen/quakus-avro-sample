@@ -5,13 +5,11 @@ import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.kafka.InjectKafkaCompanion;
 import io.quarkus.test.kafka.KafkaCompanionResource;
-import io.smallrye.reactive.messaging.MutinyEmitter;
 import io.smallrye.reactive.messaging.kafka.companion.KafkaCompanion;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.acme.kafka.quarkus.Movie;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest

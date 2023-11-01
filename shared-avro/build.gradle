@@ -28,8 +28,8 @@ group 'org.acme'
 version '1.0.0-SNAPSHOT'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 compileJava {
@@ -39,4 +39,12 @@ compileJava {
 
 compileTestJava {
     options.encoding = 'UTF-8'
+}
+
+jar {
+    dependsOn('jandex')
+}
+
+quarkusDependenciesBuild {
+    dependsOn('jandex')
 }

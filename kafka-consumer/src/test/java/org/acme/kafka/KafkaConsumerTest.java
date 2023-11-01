@@ -2,9 +2,8 @@ package org.acme.kafka;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.reactive.messaging.MutinyEmitter;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.acme.kafka.quarkus.Movie;
-import org.awaitility.Awaitility;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.junit.jupiter.api.Test;
 

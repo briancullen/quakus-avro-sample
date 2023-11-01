@@ -1,6 +1,6 @@
 package org.acme.kafka;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.acme.kafka.quarkus.Movie;
 
 @ApplicationScoped
